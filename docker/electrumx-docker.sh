@@ -51,6 +51,7 @@ sed -i "s/^\(WEB=\).*/WEB=$BTX_WEB/g" btx-docker.sh
 sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=$BTX_BOOTSTRAP/g" btx-docker.sh
 chmod +x ./btx-docker.sh
 ./btx-docker.sh
+rm ./btx-docker.sh
 
 
 #
@@ -79,9 +80,11 @@ printf "\n------------------------------\n"
 wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/master/docker/check_os.sh -O check_os.sh
 chmod +x ./check_os.sh
 source ./check_os.sh
+rm ./check_os.sh
 wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/master/docker/firewall_config.sh -O firewall_config.sh
 chmod +x ./firewall_config.sh
 source ./firewall_config.sh ${ELECTRUMX_SSL_PORT}
+rm ./firewall_config.sh
 
 
 #
