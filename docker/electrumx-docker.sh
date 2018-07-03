@@ -71,13 +71,6 @@ BTX_RPC_PWD="$(echo $BTX_RPC_PWD | tr -d '[:punct:]')"
 BTX_RPC_URL="http://${BTX_RPC_USER}:${BTX_RPC_PWD}@${BTX_RPC_HOST}:8556" #http://user:pass@host:port
 
 
-# DEBUG
-#printf "DEBUG BTX_RPC_HOST: ${BTX_RPC_HOST}\n"
-#printf "DEBUG BTX_RPC_USER: ${BTX_RPC_USER}\n"
-#printf "DEBUG BTX_RPC_PWD: ${BTX_RPC_PWD}\n"
-#printf "DEBUG BTX_RPC_URL: ${BTX_RPC_URL}\n"
-
-
 #
 # Firewall Setup for ElectrumX
 #
@@ -145,7 +138,21 @@ sed -i "s|^\(rpcallowip=\).*|rpcallowip=${ELX_RPC_HOST}|g" ${BTX_CONFIG}
 # Restart bitcored to accept the config change (rpcallowip)
 #
 printf "\nConnect ElectrumX Server with RPC Server"
-printf "\n---------------------------------------------------------\n"
+printf "\n----------------------------------------\n"
+# Wait until Daemon bitcored is running
+function is_running {
+   running=$(docker exec "$1" supervisorctl status | grep "RUNNING")
+   if [ -z "$running" ]; then
+      printf "."
+      true;
+   else
+      printf "\n"
+      false;
+   fi
+   return $?;
+}
+printf "Please wait..."
+while is_running ${BTX_CONTAINER_NAME} ; do true; done
 docker exec ${BTX_CONTAINER_NAME} supervisorctl restart bitcored
 sleep 5
 docker exec ${BTX_CONTAINER_NAME} supervisorctl status
