@@ -28,6 +28,6 @@ Login as root, then do:
 
 ```
 wget https://raw.githubusercontent.com/LIMXTEC/electrumx/master/docker/electrumx-docker.sh
-chmod +x elextrumx-docker.sh
-./elextrumx-docker.sh
+chmod +x electrumx-docker.sh
+./electrumx-docker.sh
 ```
