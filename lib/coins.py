@@ -1540,7 +1540,7 @@ class Bitcore(BitcoinMixin, Coin):
     TX_COUNT_HEIGHT = 126946
     TX_PER_BLOCK = 2
     RPC_PORT = 8556
-	PEERS = [
+    PEERS = [
         'ele1.bitcore.cc s t',
         'ele2.bitcore.cc s t',
         'ele3.bitcore.cc s t',
@@ -1775,6 +1775,8 @@ class Bitsend(Coin):
     XPUB_VERBYTES = bytes.fromhex("0488B21E")
     XPRV_VERBYTES = bytes.fromhex("0488ADE4")
 
+    GENESIS_HASH = ('0000012e1b8843ac9ce8c18603658eaf'
+                    '8895f99d3f5e7e1b7b1686f35e3c087a')
     TX_COUNT = 30000
     TX_COUNT_HEIGHT = 15000
     TX_PER_BLOCK = 1
