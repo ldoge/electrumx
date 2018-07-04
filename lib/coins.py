@@ -1775,9 +1775,9 @@ class Bitsend(Coin):
     NET = "mainnet"
     XPUB_VERBYTES = bytes.fromhex("0488B21E")
     XPRV_VERBYTES = bytes.fromhex("0488ADE4")
-
-    GENESIS_HASH = ('0000012e1b8843ac9ce8c18603658eaf'
-                    '8895f99d3f5e7e1b7b1686f35e3c087a')
+	
+    GENESIS_HASH = ('6804d3cf0fa1539708ff84b0f9a1b5a'
+                    'bc95fc78deafe3cb7e5becc22bf43877e')
     TX_COUNT = 30000
     TX_COUNT_HEIGHT = 15000
     TX_PER_BLOCK = 1
