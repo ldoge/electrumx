@@ -13,6 +13,7 @@ ELECTRUMX_CONTAINER_NAME="electrumx"
 DOCKER_REPO="limxtec"
 GIT_REPO="limxtec"
 ELECTRUMX_SSL_PORT="50002"
+ELECTRUMX_RPC_PORT="8000"
 
 
 #
@@ -83,7 +84,7 @@ source ./check_os.sh
 rm ./check_os.sh
 wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/master/docker/firewall_config.sh -O firewall_config.sh
 chmod +x ./firewall_config.sh
-source ./firewall_config.sh ${ELECTRUMX_SSL_PORT}
+source ./firewall_config.sh ${ELECTRUMX_SSL_PORT} ${ELECTRUMX_RPC_PORT}
 rm ./firewall_config.sh
 
 
@@ -122,6 +123,7 @@ docker run \
   -e DAEMON_URL=${BTX_RPC_URL} \
   -e COIN=${COIN} \
   -p ${ELECTRUMX_SSL_PORT}:${ELECTRUMX_SSL_PORT} \
+  -p ${ELECTRUMX_RPC_PORT}:${ELECTRUMX_RPC_PORT} \
   --name ${ELECTRUMX_CONTAINER_NAME} \
   -d \
   --rm \
