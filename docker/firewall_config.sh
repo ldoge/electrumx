@@ -115,7 +115,7 @@ if [[ $OS =~ "Fedora" ]] || [[ $OS =~ "fedora" ]] || [[ $OS =~ "CentOS" ]] || [[
             #ufw default deny incoming
             ufw default allow outgoing
             yes | ufw enable
-            ufw --reload
+            ufw reload
         fi
     fi
 
@@ -167,7 +167,7 @@ elif [[ $OS =~ "Ubuntu" ]] || [[ $OS =~ "ubuntu" ]] || [[ $OS =~ "Debian" ]] || 
         #ufw default deny incoming
         ufw default allow outgoing
         yes | ufw enable
-        ufw --reload
+        ufw reload
     fi
 else
     printf "Automated firewall setup for $OS ($VER) not supported!\n"
