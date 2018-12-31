@@ -1,8 +1,8 @@
 #!/bin/bash
 set -u
 
-# Copyright (c) 2018 The Bitcore BTX Core Developers
-# ElectrumX Server + Bitcore RPC Server Docker Solution
+# Copyright (c) 2018 The Bitsend BSD Core Developers
+# ElectrumX Server + Bitsend Docker Solution
 # Script elexctrumx.sh
 
 
@@ -17,15 +17,17 @@ ELECTRUMX_RPC_PORT="8000"
 
 
 #
-# Define Variables for BTX RPC Server
+# Define Variables for BSD Masternode
 #
-BTX_CONFIG_PATH="/home/bitcore/.bitcore"
-BTX_CONTAINER_NAME="btx-rpc-server"
-BTX_DEFAULT_PORT="8555"
-BTX_RPC_PORT="8556"
-BTX_TOR_PORT="9051"
-BTX_WEB="bitcore.cc" # without "https://" and without the last "/" (only HTTPS accepted)
-BTX_BOOTSTRAP="bootstrap.tar.gz"
+BSD_CONFIG_PATH="/home/bitsend/.bitsend"
+BSD_CONFIG="/home/bitsend/.bitsend/bitsend.conf"
+BSD_CONTAINER_NAME="bsd-masternode"
+BSD_MASTERNODE="0"
+BSD_DEFAULT_PORT="8886"
+BSD_RPC_PORT="8800"
+BSD_TOR_PORT="9051"
+BSD_WEB="www.mybitsend.com" # without "https://" and without the last "/" (only HTTPS accepted)
+BSD_BOOTSTRAP="bootstrap.tar.gz"
 
 
 #
@@ -34,43 +36,43 @@ BTX_BOOTSTRAP="bootstrap.tar.gz"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NO_COL='\033[0m'
-BTX_COL='\033[1;35m'
+BSD_COL='\033[0;34m'
 
 
 #
-# Installation of BTX RPC Server
+# Installation of BSD Masternode
 #
 apt-get install wget
-wget https://raw.githubusercontent.com/${GIT_REPO}/Bitcore-BTX-RPC-Installer/master/btx-docker.sh -O btx-docker.sh
-sed -i "s/^\(DOCKER_REPO=\).*/DOCKER_REPO=$DOCKER_REPO/g" btx-docker.sh
-sed -i "s/^\(CONFIG_PATH=\).*/CONFIG_PATH=$BTX_CONFIG_PATH/g" btx-docker.sh
-sed -i "s/^\(CONTAINER_NAME=\).*/CONTAINER_NAME=$BTX_CONTAINER_NAME/g" btx-docker.sh
-sed -i "s/^\(DEFAULT_PORT=\).*/DEFAULT_PORT=$BTX_DEFAULT_PORT/g" btx-docker.sh
-sed -i "s/^\(RPC_PORT=\).*/RPC_PORT=$BTX_RPC_PORT/g" btx-docker.sh
-sed -i "s/^\(TOR_PORT=\).*/TOR_PORT=$BTX_TOR_PORT/g" btx-docker.sh
-sed -i "s/^\(WEB=\).*/WEB=$BTX_WEB/g" btx-docker.sh
-sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=$BTX_BOOTSTRAP/g" btx-docker.sh
-chmod +x ./btx-docker.sh
-./btx-docker.sh
-rm ./btx-docker.sh
-
+wget https://raw.githubusercontent.com/${GIT_REPO}/BSD-Masternode-Setup/master/bsd-docker.sh -O bsd-docker.sh
+sed -i "s/^\(DOCKER_REPO=\).*/DOCKER_REPO=$DOCKER_REPO/g" bsd-docker.sh
+sed -i "s|^\(CONFIG=\).*|CONFIG=$BSD_CONFIG|g" bsd-docker.sh
+sed -i "s/^\(CONTAINER_NAME=\).*/CONTAINER_NAME=$BSD_CONTAINER_NAME/g" bsd-docker.sh
+sed -i "s/^\(MASTERNODE=\).*/MASTERNODE=$BSD_MASTERNODE/g" bsd-docker.sh
+sed -i "s/^\(DEFAULT_PORT=\).*/DEFAULT_PORT=$BSD_DEFAULT_PORT/g" bsd-docker.sh
+sed -i "s/^\(RPC_PORT=\).*/RPC_PORT=$BSD_RPC_PORT/g" bsd-docker.sh
+sed -i "s/^\(TOR_PORT=\).*/TOR_PORT=$BSD_TOR_PORT/g" bsd-docker.sh
+sed -i "s/^\(WEB=\).*/WEB=$BSD_WEB/g" bsd-docker.sh
+sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=$BSD_BOOTSTRAP/g" bsd-docker.sh
+chmod +x ./bsd-docker.sh
+./bsd-docker.sh
+rm ./bsd-docker.sh
 
 #
 # Installation of ElectrumX Server
 #
-printf "\n\nDOCKER SETUP FOR ${BTX_COL}BITCORE (BTX)${NO_COL} ELECTRUMX SERVER\n"
+printf "\n\nDOCKER SETUP FOR ${BSD_COL}BITSEND (BSD)${NO_COL} ELECTRUMX SERVER\n"
 
 
 #
-# Save needed data from BTX RPC Server to bind with ElectrumX Server
+# Save needed data from BSD Masternode to bind with ElectrumX Server
 #
-BTX_CONFIG="${BTX_CONFIG_PATH}/bitcore.conf"
-BTX_RPC_HOST="$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${BTX_CONTAINER_NAME})"
-BTX_RPC_USER="$(cat ${BTX_CONFIG} | grep rpcuser | cut -d "=" -f 2)"
-BTX_RPC_PWD="$(cat ${BTX_CONFIG} | grep rpcpassword | cut -d "=" -f 2)"
-BTX_RPC_USER="$(echo $BTX_RPC_USER | tr -d '[:punct:]')"
-BTX_RPC_PWD="$(echo $BTX_RPC_PWD | tr -d '[:punct:]')"
-BTX_RPC_URL="http://${BTX_RPC_USER}:${BTX_RPC_PWD}@${BTX_RPC_HOST}:$BTX_RPC_PORT}" #http://user:pass@host:port
+BSD_CONFIG="${BSD_CONFIG_PATH}/bitsend.conf"
+BSD_RPC_HOST="$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${BSD_CONTAINER_NAME})"
+BSD_RPC_USER="$(cat ${BSD_CONFIG} | grep rpcuser | cut -d "=" -f 2)"
+BSD_RPC_PWD="$(cat ${BSD_CONFIG} | grep rpcpassword | cut -d "=" -f 2)"
+BSD_RPC_USER="$(echo $BSD_RPC_USER | tr -d '[:punct:]')"
+BSD_RPC_PWD="$(echo $BSD_RPC_PWD | tr -d '[:punct:]')"
+BSD_RPC_URL="http://${BSD_RPC_USER}:${BSD_RPC_PWD}@${BSD_RPC_HOST}:${BSD_RPC_PORT}" #http://user:pass@host:port
 
 
 #
@@ -114,13 +116,13 @@ docker pull ${DOCKER_REPO}/electrumx
 
 
 #
-# Start docker ElectrumX Server for Bitcore (BTX) in a docker container
+# Start docker ElectrumX Server for Bitsend (BSD) in a docker container
 #
 # Hint: Only SSL Port 50002 will be open
-COIN="Bitcore"
+COIN="Bitsend"
 docker run \
-  -v ${BTX_CONFIG_PATH}:/data \
-  -e DAEMON_URL=${BTX_RPC_URL} \
+  -v ${BSD_CONFIG_PATH}:/data \
+  -e DAEMON_URL=${BSD_RPC_URL} \
   -e COIN=${COIN} \
   -p ${ELECTRUMX_SSL_PORT}:${ELECTRUMX_SSL_PORT} \
   -p ${ELECTRUMX_RPC_PORT}:${ELECTRUMX_RPC_PORT} \
@@ -131,20 +133,20 @@ docker run \
 
 
 #
-# Add ElectrumX IP Address to Bitcore config file
+# Add ElectrumX IP Address to Bitsend config file
 #
 sleep 5
 ELX_RPC_HOST="$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${ELECTRUMX_CONTAINER_NAME})"
 #printf "DEBUG ELX_RPC_HOST: ${ELX_RPC_HOST}\n"
-sed -i "s|^\(rpcallowip=\).*|rpcallowip=${ELX_RPC_HOST}|g" ${BTX_CONFIG}
+sed -i "s|^\(rpcallowip=\).*|rpcallowip=${ELX_RPC_HOST}|g" ${BSD_CONFIG}
 
 
 #
-# Restart bitcored to accept the config change (rpcallowip)
+# Restart bitsendd to accept the config change (rpcallowip)
 #
-printf "\nConnect ElectrumX Server with RPC Server"
+printf "\nConnect ElectrumX Server with Masternode"
 printf "\n----------------------------------------\n"
-# Wait until Daemon bitcored is running
+# Wait until Daemon bitsendd is running
 function is_running {
    running=$(docker exec "$1" supervisorctl status | grep "RUNNING")
    if [ -z "$running" ]; then
@@ -157,10 +159,10 @@ function is_running {
    return $?;
 }
 printf "Please wait..."
-while is_running ${BTX_CONTAINER_NAME} ; do true; done
-docker exec ${BTX_CONTAINER_NAME} supervisorctl restart bitcored
+while is_running ${BSD_CONTAINER_NAME} ; do true; done
+docker exec ${BSD_CONTAINER_NAME} supervisorctl restart bitsendd
 sleep 5
-docker exec ${BTX_CONTAINER_NAME} supervisorctl status
+docker exec ${BSD_CONTAINER_NAME} supervisorctl status
 
 
 #
@@ -168,17 +170,17 @@ docker exec ${BTX_CONTAINER_NAME} supervisorctl status
 #
 sleep 5
 clear
-printf "\n${BTX_COL}BitCore (BTX}${GREEN} ElectrumX Server + RPC Server Docker Solution${NO_COL}\n"
+printf "\n${BSD_COL}BitCore (BSD}${GREEN} ElectrumX Server + Masternode Docker Solution${NO_COL}\n"
 sudo docker ps | grep ${ELECTRUMX_CONTAINER_NAME} >/dev/null
 if [ $? -ne 0 ];then
     printf "${RED}Sorry! Something went wrong. :(${NO_COL}\n"
 else
-    printf "${GREEN}GREAT! Your ElectrumX Server Docker + RPC Server Docker is running now! :)${NO_COL}\n"
-    printf "\nShow your running Docker Container \'${ELECTRUMX_CONTAINER_NAME}\' and \'${BTX_CONTAINER_NAME}\' with ${GREEN}'docker ps'${NO_COL}\n"
+    printf "${GREEN}GREAT! Your ElectrumX Server Docker + Masternode  Docker is running now! :)${NO_COL}\n"
+    printf "\nShow your running Docker Container \'${ELECTRUMX_CONTAINER_NAME}\' and \'${BSD_CONTAINER_NAME}\' with ${GREEN}'docker ps'${NO_COL}\n"
     sudo docker ps | grep ${ELECTRUMX_CONTAINER_NAME}
-    sudo docker ps | grep ${BTX_CONTAINER_NAME}
+    sudo docker ps | grep ${BSD_CONTAINER_NAME}
     printf "\nJump inside the ElectrumX Server Docker Container with ${GREEN}'docker exec -it ${ELECTRUMX_CONTAINER_NAME} bash'${NO_COL}\n"
-     printf "\nJump inside the RPC Server Docker Container with ${GREEN}'docker exec -it ${BTX_CONTAINER_NAME} bash'${NO_COL}\n"
+     printf "\nJump inside the Masternode Docker Container with ${GREEN}'docker exec -it ${BSD_CONTAINER_NAME} bash'${NO_COL}\n"
     printf "${GREEN}HAVE FUN!${NO_COL}\n\n"
 fi
 

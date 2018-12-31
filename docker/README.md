@@ -1,4 +1,4 @@
-# ElectrumX Server + Bitcore RPC Server Docker Solution
+# ElectrumX Server Docker Solution (support BTX and BSD)
 
 ## Requirements
 
@@ -23,11 +23,22 @@ Download and execute the automated docker-ce installation script - maintained by
 sudo curl -sSL https://get.docker.com | sh
 ```
 
-## Deployment of Docker Solution
+# ElectrumX Server Docker Solution for Bitcore
+
 Login as root, then do:
 
 ```
-wget https://raw.githubusercontent.com/LIMXTEC/electrumx/master/docker/electrumx-docker.sh
-chmod +x electrumx-docker.sh
-./electrumx-docker.sh
+wget https://raw.githubusercontent.com/LIMXTEC/electrumx/master/docker/electrumx-docker-btx.sh
+chmod +x electrumx-docker-btx.sh
+./electrumx-docker-btx.sh
+```
+
+# ElectrumX Server Docker Solution for Bitsend
+
+Login as root, then do:
+
+```
+wget https://raw.githubusercontent.com/LIMXTEC/electrumx/master/docker/electrumx-docker-bsd.sh
+chmod +x electrumx-docker-bsd.sh
+./electrumx-docker-bsd.sh
 ```
