@@ -1,5 +1,5 @@
 #!/bin/bash
-set -u
+set -x
 
 # Copyright (c) 2018 The Bitsend BSD Core Developers
 # ElectrumX Server + Bitsend Docker Solution
@@ -10,8 +10,8 @@ set -u
 # Define Variables for ElectrumX Server
 #
 ELECTRUMX_CONTAINER_NAME="electrumx"
-DOCKER_REPO="limxtec"
-GIT_REPO="limxtec"
+DOCKER_REPO="dalijolijo"
+GIT_REPO="dalijolijo"
 ELECTRUMX_SSL_PORT="50002"
 ELECTRUMX_RPC_PORT="8000"
 
@@ -44,18 +44,18 @@ BSD_COL='\033[0;34m'
 #
 apt-get install wget
 wget https://raw.githubusercontent.com/${GIT_REPO}/BSD-Masternode-Setup/master/bsd-docker.sh -O bsd-docker.sh
-sed -i "s/^\(DOCKER_REPO=\).*/DOCKER_REPO=$DOCKER_REPO/g" bsd-docker.sh
-sed -i "s|^\(CONFIG=\).*|CONFIG=$BSD_CONFIG|g" bsd-docker.sh
-sed -i "s/^\(CONTAINER_NAME=\).*/CONTAINER_NAME=$BSD_CONTAINER_NAME/g" bsd-docker.sh
-sed -i "s/^\(MASTERNODE=\).*/MASTERNODE=$BSD_MASTERNODE/g" bsd-docker.sh
-sed -i "s/^\(DEFAULT_PORT=\).*/DEFAULT_PORT=$BSD_DEFAULT_PORT/g" bsd-docker.sh
-sed -i "s/^\(RPC_PORT=\).*/RPC_PORT=$BSD_RPC_PORT/g" bsd-docker.sh
-sed -i "s/^\(TOR_PORT=\).*/TOR_PORT=$BSD_TOR_PORT/g" bsd-docker.sh
-sed -i "s/^\(WEB=\).*/WEB=$BSD_WEB/g" bsd-docker.sh
-sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=$BSD_BOOTSTRAP/g" bsd-docker.sh
+sed -i "s/^\(DOCKER_REPO=\).*/DOCKER_REPO=\"$DOCKER_REPO\"/g" bsd-docker.sh
+sed -i "s|^\(CONFIG=\).*|CONFIG=\"$BSD_CONFIG\"|g" bsd-docker.sh
+sed -i "s/^\(CONTAINER_NAME=\).*/CONTAINER_NAME=\"$BSD_CONTAINER_NAME\"/g" bsd-docker.sh
+sed -i "s/^\(MASTERNODE=\).*/MASTERNODE=\"$BSD_MASTERNODE\"/g" bsd-docker.sh
+sed -i "s/^\(DEFAULT_PORT=\).*/DEFAULT_PORT=\"$BSD_DEFAULT_PORT\"/g" bsd-docker.sh
+sed -i "s/^\(RPC_PORT=\).*/RPC_PORT=\"$BSD_RPC_PORT\"/g" bsd-docker.sh
+sed -i "s/^\(TOR_PORT=\).*/TOR_PORT=\"$BSD_TOR_PORT\"/g" bsd-docker.sh
+sed -i "s/^\(WEB=\).*/WEB=\"$BSD_WEB\"/g" bsd-docker.sh
+sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=\"$BSD_BOOTSTRAP\"/g" bsd-docker.sh
 chmod +x ./bsd-docker.sh
 ./bsd-docker.sh
-rm ./bsd-docker.sh
+#rm ./bsd-docker.sh
 
 #
 # Installation of ElectrumX Server
@@ -112,7 +112,6 @@ if [ $? -eq 0 ];then
     fi
 fi
 docker rm ${ELECTRUMX_CONTAINER_NAME} >/dev/null
-docker pull ${DOCKER_REPO}/electrumx
 
 
 #
@@ -137,7 +136,7 @@ docker run \
 #
 sleep 5
 ELX_RPC_HOST="$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${ELECTRUMX_CONTAINER_NAME})"
-#printf "DEBUG ELX_RPC_HOST: ${ELX_RPC_HOST}\n"
+printf "DEBUG ELX_RPC_HOST: ${ELX_RPC_HOST}\n"
 sed -i "s|^\(rpcallowip=\).*|rpcallowip=${ELX_RPC_HOST}|g" ${BSD_CONFIG}
 
 
