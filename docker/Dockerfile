@@ -39,7 +39,7 @@ RUN apk add --no-cache git build-base openssl curl bash vim && \
     pip install aiohttp pylru plyvel
 
 # Install ElectrumX Server
-RUN git clone https://github.com/dalijolijo/electrumx.git && \
+RUN git clone -b upgrade https://github.com/dalijolijo/electrumx.git && \
     cd electrumx && \
     cp ./electrumx_server.py /usr/local/bin/electrumx_server.py && \
     python setup.py install && \
