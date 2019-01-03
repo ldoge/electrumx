@@ -10,8 +10,8 @@ set -u
 # Define Variables for ElectrumX Server
 #
 ELECTRUMX_CONTAINER_NAME="electrumx"
-DOCKER_REPO="limxtec"
-GIT_REPO="limxtec"
+DOCKER_REPO="dalijolijo"
+GIT_REPO="dalijolijo"
 ELECTRUMX_SSL_PORT="50002"
 ELECTRUMX_RPC_PORT="8000"
 
@@ -42,17 +42,17 @@ BTX_COL='\033[1;35m'
 #
 apt-get install wget
 wget https://raw.githubusercontent.com/${GIT_REPO}/Bitcore-BTX-RPC-Installer/master/btx-docker.sh -O btx-docker.sh
-sed -i "s/^\(DOCKER_REPO=\).*/DOCKER_REPO=$DOCKER_REPO/g" btx-docker.sh
-sed -i "s/^\(CONFIG_PATH=\).*/CONFIG_PATH=$BTX_CONFIG_PATH/g" btx-docker.sh
-sed -i "s/^\(CONTAINER_NAME=\).*/CONTAINER_NAME=$BTX_CONTAINER_NAME/g" btx-docker.sh
-sed -i "s/^\(DEFAULT_PORT=\).*/DEFAULT_PORT=$BTX_DEFAULT_PORT/g" btx-docker.sh
-sed -i "s/^\(RPC_PORT=\).*/RPC_PORT=$BTX_RPC_PORT/g" btx-docker.sh
-sed -i "s/^\(TOR_PORT=\).*/TOR_PORT=$BTX_TOR_PORT/g" btx-docker.sh
-sed -i "s/^\(WEB=\).*/WEB=$BTX_WEB/g" btx-docker.sh
-sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=$BTX_BOOTSTRAP/g" btx-docker.sh
+sed -i "s/^\(DOCKER_REPO=\).*/DOCKER_REPO=\"$DOCKER_REPO\"/g" btx-docker.sh
+sed -i "s/^\(CONFIG_PATH=\).*/CONFIG_PATH=\"$BTX_CONFIG_PATH\"/g" btx-docker.sh
+sed -i "s/^\(CONTAINER_NAME=\).*/CONTAINER_NAME=\"$BTX_CONTAINER_NAME\"/g" btx-docker.sh
+sed -i "s/^\(DEFAULT_PORT=\).*/DEFAULT_PORT=\"$BTX_DEFAULT_PORT\"/g" btx-docker.sh
+sed -i "s/^\(RPC_PORT=\).*/RPC_PORT=\"$BTX_RPC_PORT\"/g" btx-docker.sh
+sed -i "s/^\(TOR_PORT=\).*/TOR_PORT=\"$BTX_TOR_PORT\"/g" btx-docker.sh
+sed -i "s/^\(WEB=\).*/WEB=\"$BTX_WEB\"/g" btx-docker.sh
+sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=\"$BTX_BOOTSTRAP\"/g" btx-docker.sh
 chmod +x ./btx-docker.sh
 ./btx-docker.sh
-rm ./btx-docker.sh
+#rm ./btx-docker.sh
 
 
 #
@@ -70,7 +70,7 @@ BTX_RPC_USER="$(cat ${BTX_CONFIG} | grep rpcuser | cut -d "=" -f 2)"
 BTX_RPC_PWD="$(cat ${BTX_CONFIG} | grep rpcpassword | cut -d "=" -f 2)"
 BTX_RPC_USER="$(echo $BTX_RPC_USER | tr -d '[:punct:]')"
 BTX_RPC_PWD="$(echo $BTX_RPC_PWD | tr -d '[:punct:]')"
-BTX_RPC_URL="http://${BTX_RPC_USER}:${BTX_RPC_PWD}@${BTX_RPC_HOST}:8556" #http://user:pass@host:port
+BTX_RPC_URL="http://${BTX_RPC_USER}:${BTX_RPC_PWD}@${BTX_RPC_HOST}:${BTX_RPC_PORT}" #http://user:pass@host:port
 
 
 #

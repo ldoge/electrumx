@@ -1769,64 +1769,31 @@ class Xuez(Coin):
                 'nAccumulatorCheckpoint': hash_to_str(header[80:112]),
             }
 
+
+# Source: https://github.com/LIMXTEC/BitSend
 class Bitsend(Coin):
     NAME = "Bitsend"
     SHORTNAME = "BSD"
     NET = "mainnet"
     XPUB_VERBYTES = bytes.fromhex("0488B21E")
     XPRV_VERBYTES = bytes.fromhex("0488ADE4")
-	
-    GENESIS_HASH = ('6804d3cf0fa1539708ff84b0f9a1b5a'
-                    'bc95fc78deafe3cb7e5becc22bf43877e')
+    P2PKH_VERBYTE = bytes.fromhex("66")
+    P2SH_VERBYTES = [bytes.fromhex("5")]
+    WIF_BYTE = bytes.fromhex("cc")
+    GENESIS_HASH = ('0000012e1b8843ac9ce8c18603658eaf'
+                    '8895f99d3f5e7e1b7b1686f35e3c087a')
     TX_COUNT = 30000
     TX_COUNT_HEIGHT = 15000
     TX_PER_BLOCK = 1
-    RPC_PORT = 8886
+    RPC_PORT = 8800
     REORG_LIMIT = 1000
     BASIC_HEADER_SIZE = 112
-    PEERS = []
-
-    @classmethod
-    def header_hash(cls, header):
-        '''
-        Given a header return the hash for Xuez.
-        Need to download `xevan_hash` module
-        Source code: https://github.com/xuez/xuez
-        '''
-        version, = struct.unpack('<I', header[:4])
-
-        import xevan_hash
-
-        if version == 1:
-            return xevan_hash.getPoWHash(header[:80])
-        else:
-            return xevan_hash.getPoWHash(header)
-
-    @classmethod
-    def electrum_header(cls, header, height):
-        version, = struct.unpack('<I', header[:4])
-        timestamp, bits, nonce = struct.unpack('<III', header[68:80])
-        if version == 1:
-            return {
-                'block_height': height,
-                'version': version,
-                'prev_block_hash': hash_to_str(header[4:36]),
-                'merkle_root': hash_to_str(header[36:68]),
-                'timestamp': timestamp,
-                'bits': bits,
-                'nonce': nonce,
-            }
-        else:
-            return {
-                'block_height': height,
-                'version': version,
-                'prev_block_hash': hash_to_str(header[4:36]),
-                'merkle_root': hash_to_str(header[36:68]),
-                'timestamp': timestamp,
-                'bits': bits,
-                'nonce': nonce,
-                'nAccumulatorCheckpoint': hash_to_str(header[80:112]),
-            }
+    PEERS = [
+        'ele1.bitsend.cc s t',
+        'ele2.bitsend.cc s t',
+        'ele3.bitsend.cc s t',
+        'ele4.bitsend.cc s t'
+    ]
 
 
 class Pac(Coin):
