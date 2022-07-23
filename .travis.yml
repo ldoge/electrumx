@@ -25,6 +25,7 @@ install:
   - pip install blake256
   - pip install x11_hash
   - pip install xevan_hash
+  - pip install scrypt
 # command to run tests
 script:
   - pytest --cov=server --cov=lib --cov=wallet
